@@ -1,0 +1,17 @@
+
+* pbf.c: 
+    - exclude OSM_REL_MEMBER_TYPE_RELATION/UNKNOWN from adding
+       to wanted
+    - use extra list for way members (unsorted!) and add them @end (sorted)
+    - check rel-member ways for being in bbox? ... now a relation in bbox
+      is ignored if it just has ways and a -u UserName is given
+
+* osm-extract:
+  - allow several -t key -v val pairs and AND / OR them
+  - allow several -u user and OR them
+  - allow several -n, -w, -r
+
+* changeset support
+
+* pbf writer
+
