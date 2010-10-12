@@ -58,6 +58,7 @@ extern int osm_is_member(struct osm_members *m, uint64_t id);
 extern void osm_free_tags(OSM_Tag_List *t);
 extern void osm_free_node(OSM_Node *n);
 extern void osm_free_way(OSM_Way *w);
+extern void osm_free_way_list(OSM_Way_List *w);
 extern void osm_free_relation(OSM_Relation *r);
 
 /* realloc.c */
@@ -132,6 +133,13 @@ extern Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompr
 extern void osm_pbf_free_primitive(PrimitiveBlock *P);
 extern PrimitiveBlock *osm_pbf_unpack_data(Blob *B, unsigned char *uncompressed);
 
+/* nodes.c */
+extern int osm_node_pos(OSM_Node_List *n, uint64_t id);
+extern int osm_node_cmp(const void *a, const void *b);
+extern void osm_node_list_sort(OSM_Node_List *n);
+
+/* bbox.c */
+extern OSM_BBox *osm_bbox_from_nodes(OSM_Node_List *n);
 /* open.c */
 extern OSM_File *osm_open(const char *filename, enum OSM_File_Type type);
 /* parse.c */

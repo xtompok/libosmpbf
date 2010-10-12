@@ -40,6 +40,13 @@ void osm_free_way(OSM_Way *w) {
     free(w);
 }
 
+void osm_free_way_list(OSM_Way_List *w) {
+    int i = 0;
+    for (i=0; i<w->num; i++)
+        osm_free_way(w->data[i]);
+    free(w);
+}
+
 void osm_free_relation(OSM_Relation *r) {
     int i;
     if (r == NULL)

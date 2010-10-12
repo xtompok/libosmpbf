@@ -356,7 +356,6 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                                 deltachangeset += I->changeset[k];
                                 deltauid       += I->uid[k];
                                 deltauser_sid  += I->user_sid[k];
-
                                 n->version   = I->version[k];
                                 n->changeset = deltachangeset;
                                 n->user = strndup((const char *)P->stringtable->s[deltauser_sid].data, P->stringtable->s[deltauser_sid].len);
@@ -581,7 +580,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                                 }
                             }
                             if (W->n_refs) 
-                                osm_add_members(mem_nodes, W->n_refs, ref, 1);
+                                osm_add_members(mem_nodes, W->n_refs, ref, 0);
                             if (debug)
                                 fprintf(stderr, "adding % 6d members to way=%lu list\n", (int)W->n_refs, W->id);
                             osm_realloc_way_list(data->ways);

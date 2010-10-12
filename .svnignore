@@ -1,0 +1,12 @@
+*.gpx
+foo
+*.out
+osm2gpx
+waydupes
+osmpbf2osm
+osm-extract
+osmformat.pb-c.c
+osmformat.pb-c.h
+fileformat.pb-c.c
+fileformat.pb-c.h
+proto_c_gen
