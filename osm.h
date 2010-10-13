@@ -95,14 +95,16 @@ extern OSM_Relation_List *osm_xml_parse_relations(long int start,
                             FILE *file,
                             int mode,
                             int(*filter)(OSM_Relation *r),
-                            struct osm_members *wanted);
+                            struct osm_members *mem_ways,
+                            struct osm_members *mem_node);
 /* xml-way.c */
 extern OSM_Way *osm_xml_get_way(FILE *file, char *buffer, char *param);
 extern OSM_Way_List *osm_xml_parse_ways(long int start,
                         FILE *file,
                         int mode,
                         int(*filter)(OSM_Way *w),
-                        struct osm_members *wanted);
+                        struct osm_members *mem_ways,
+                        struct osm_members *mem_node);
 /* xml-node.c */
 extern OSM_Node *osm_xml_get_node(FILE *file, char *buffer, char *param);
 extern OSM_Node_List *osm_xml_parse_nodes(long int start,

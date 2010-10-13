@@ -192,7 +192,8 @@ OSM_Relation_List *osm_xml_parse_relations(long int start,
                             FILE *file, 
                             int mode, 
                             int(*filter)(OSM_Relation *r),
-                            struct osm_members *wanted)
+                            struct osm_members *mem_way,
+                            struct osm_members *mem_node)
 {
     OSM_Relation_List *rl = NULL;
     OSM_Relation      *R  = NULL;
@@ -224,14 +225,26 @@ OSM_Relation_List *osm_xml_parse_relations(long int start,
         rl->num += 1;
         if (mode != OSMDATA_DUMP && R->member->num) {
             int i = 0;
-            uint64_t *ref = malloc(sizeof(uint64_t) * R->member->num);
+            uint64_t *nref = malloc(sizeof(uint64_t) * R->member->num);
+            uint64_t *wref = malloc(sizeof(uint64_t) * R->member->num);
+            int num_nref = 0;
+            int num_wref = 0;
             for (i=0; i<R->member->num; i++) {
-                ref[i] = R->member->data[i].ref;
+                if (R->member->data[i].type == OSM_REL_MEMBER_TYPE_NODE) {
+                    nref[num_nref] = R->member->data[i].ref;
+                    ++num_nref;
+                }
+                else if (R->member->data[i].type == OSM_REL_MEMBER_TYPE_WAY) {
+                    wref[num_wref] = R->member->data[i].ref;
+                    ++num_wref;
+                }
             }
             if (debug)
-                fprintf(stderr, "%s:%d:%s(): rel=%lu adding %d members\n",
-                                __FILE__, __LINE__, __FUNCTION__, R->id, i); 
-            osm_add_members(wanted, i, ref, 1);
+                fprintf(stderr, "%s:%d:%s(): rel=%lu adding %d way and %d node members\n",
+                                __FILE__, __LINE__, __FUNCTION__, R->id, 
+                                                        num_wref, num_nref); 
+            osm_add_members(mem_way,  num_wref, wref, 0);
+            osm_add_members(mem_node, num_nref, nref, 0);
         }
         R = osm_xml_get_relation(file, buffer, param);
     }

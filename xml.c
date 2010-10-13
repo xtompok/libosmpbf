@@ -39,6 +39,14 @@ char *osm_xml_decode(char *src) {
                 *dest = '"'; ++dest;
                 src += 5;
             }
+            else if (strncmp(src, "&lt;", 4) == 0) {
+                *dest = '<'; ++dest;
+                src += 3;
+            }
+            else if (strncmp(src, "&gt;", 4) == 0) {
+                *dest = '>'; ++dest;
+                src += 3;
+            }
             else {
                 fprintf(stderr, "warning: missing decode for %s\n", src);
             }
@@ -163,32 +171,69 @@ OSM_Data *osm_xml_parse(OSM_File *F,
               int (*cset_filter)(OSM_Changeset *) */
         )
 {
-    struct osm_members *wanted = NULL;
+    struct osm_members *mem_node = NULL;
+    struct osm_members *mem_way  = NULL;
     long int node_start = 0, way_start = 0, rel_start = 0;
     OSM_Data *data = NULL;
 
     data = malloc(sizeof(OSM_Data));
+    data->relations = NULL;
+    data->ways      = NULL;
+    data->nodes     = NULL;
 
+    if (debug) 
+        fprintf(stderr, "%s:%d:%s(): MODE=%d\n",
+                __FILE__, __LINE__, __FUNCTION__, mode);
     if (mode != OSMDATA_DUMP) {
-        wanted = malloc(sizeof(struct osm_members));
-        wanted->data = malloc(sizeof(uint64_t) * 1024);
-        wanted->num = 0;
-        wanted->size = 1024;
+        mem_node = malloc(sizeof(struct osm_members));
+        mem_node->data = malloc(sizeof(uint64_t) * 65536);
+        mem_node->num = 0;
+        mem_node->size = 65536;
+
+        mem_way = malloc(sizeof(struct osm_members));
+        mem_way->data = malloc(sizeof(uint64_t) * 65536);
+        mem_way->num = 0;
+        mem_way->size = 65536;
     }
     find_starts(F->file, &node_start, &way_start, &rel_start);
     
-    data->relations = 
-        osm_xml_parse_relations(rel_start, F->file, mode, rel_filter, wanted);
+    if (mode & (OSMDATA_REL|OSMDATA_DUMP|OSMDATA_BBOX)) { 
+        if (debug) 
+            fprintf(stderr, "%s:%d:%s(): parsing relations...\n",
+                    __FILE__, __LINE__, __FUNCTION__);
+        data->relations = 
+            osm_xml_parse_relations(rel_start, F->file, mode, rel_filter,
+                                                        mem_way, mem_node);
+        osm_sort_member(mem_way);
+    }
 
     if (mode == OSMDATA_REL)
         mode = OSMDATA_WAY;
-    data->ways = 
-        osm_xml_parse_ways(way_start, F->file, mode, way_filter, wanted);
 
+    if (debug) 
+        fprintf(stderr, "%s:%d:%s(): MODE=%d\n",
+                __FILE__, __LINE__, __FUNCTION__, mode);
+    if (mode & (OSMDATA_WAY|OSMDATA_DUMP|OSMDATA_BBOX)) {
+        if (debug) 
+            fprintf(stderr, "%s:%d:%s(): parsing ways...\n",
+                    __FILE__, __LINE__, __FUNCTION__);
+        data->ways = 
+            osm_xml_parse_ways(way_start, F->file, mode, way_filter, 
+                                                    mem_way, mem_node);
+    }
+
+    osm_sort_member(mem_node);
     if (mode == OSMDATA_WAY)
         mode = OSMDATA_NODE;
-    data->nodes = 
-        osm_xml_parse_nodes(node_start, F->file, mode, node_filter, wanted);
+
+    if (mode & (OSMDATA_NODE|OSMDATA_DUMP|OSMDATA_BBOX)) {
+        if (debug) 
+            fprintf(stderr, "%s:%d:%s(): parsing nodes...\n",
+                    __FILE__, __LINE__, __FUNCTION__);
+        data->nodes = 
+            osm_xml_parse_nodes(node_start, F->file, mode, node_filter,
+                                                mem_node);
+    }
 
     if (debug)
         fprintf(stderr, "%s:%d:%s(): nodes=%u, ways=%u, relations=%u\n", 

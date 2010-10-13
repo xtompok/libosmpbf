@@ -17,3 +17,4 @@
 
 * xml{-relation,-way,}.c - split rel and way members into node and way 
     members (like pbf.c)
+  - OSMDATA_BBOX ...

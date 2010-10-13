@@ -182,7 +182,8 @@ OSM_Way_List *osm_xml_parse_ways(long int start,
                         FILE *file,
                         int mode,
                         int(*filter)(OSM_Way *w),
-                        struct osm_members *wanted)
+                        struct osm_members *mem_way,
+                        struct osm_members *mem_node)
 {
     OSM_Way_List *wl = NULL;
     OSM_Way       *W = NULL;
@@ -201,7 +202,7 @@ OSM_Way_List *osm_xml_parse_ways(long int start,
         W != NULL;
         W = osm_xml_get_way(file, buffer, param)) {
         if (mode == OSMDATA_WAY && filter != NULL) {
-            if ((osm_is_member(wanted, W->id) == -1) && !filter(W)) {
+            if ((osm_is_member(mem_way, W->id) == -1) && !filter(W)) {
                 if (debug)
                     fprintf(stderr, "%s:%d:%s(): way=%lu filtered and not a member\n",
                                 __FILE__, __LINE__, __FUNCTION__, W->id);
@@ -209,7 +210,7 @@ OSM_Way_List *osm_xml_parse_ways(long int start,
                 continue;
             }
         }
-        else if (mode == OSMDATA_WAY && osm_is_member(wanted, W->id) == -1) {
+        else if (mode == OSMDATA_WAY && osm_is_member(mem_way, W->id) == -1) {
             if (debug)
                 fprintf(stderr, "%s:%d:%s(): way=%lu not a member\n",
                             __FILE__, __LINE__, __FUNCTION__, W->id);
@@ -241,7 +242,7 @@ OSM_Way_List *osm_xml_parse_ways(long int start,
             if (debug)
                 fprintf(stderr, "%s:%d:%s(): way=%lu adding %d members\n",
                             __FILE__, __LINE__, __FUNCTION__, W->id, i);
-            osm_add_members(wanted, i, ref, 1);
+            osm_add_members(mem_node, i, ref, 0);
         }
     }
 
