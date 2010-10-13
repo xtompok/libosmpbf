@@ -1,3 +1,11 @@
+/*
+ * util.c - various helper functions
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
@@ -8,7 +16,6 @@
 #include <time.h>
 
 #include "osm.h"
-
 
 void osm_init() {
     setenv("TZ", "UTC", 1);    
@@ -132,3 +139,4 @@ int osm_is_member(struct osm_members *m, uint64_t id) {
     return -1;
 }
 
+/* END */

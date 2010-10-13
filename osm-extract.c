@@ -1,3 +1,25 @@
+/*
+ * osm-extract.c - extract data from .osm/.osm.pbf files
+ *               - example and test for libosm
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
+/* ToDo: usage():
+   "b:dr:w:n:u:t:v:PXG
+   -b llon,botlat,rlon,toplat - use bounding box instead of full file
+   -d  - debug
+   -r ID - get relation ID
+   -w ID - get way ID
+   -n ID - get node ID
+   -u USER - fetch objects from user USER
+   -v TAG [-v VAL] - only objects with tag TAG (and value VAL)
+   -P - file is pbf format
+   -X - file is xml format
+   -G - write GPX instead of .osm XML
+*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

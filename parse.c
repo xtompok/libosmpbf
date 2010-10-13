@@ -1,3 +1,11 @@
+/*
+ * parse.c - wrapper for osm_(xml|pbf)_parse()
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <stdio.h>
 
 #include "osm.h"
@@ -30,3 +38,5 @@ OSM_Data *osm_parse(OSM_File *F,
     fprintf(stderr, "cannot parse unknown file type\n");
     return (OSM_Data *)NULL;
 }
+
+/* END */

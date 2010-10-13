@@ -1,3 +1,11 @@
+/*
+ * xml.c - .osm XML parsing, main file
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #define _GNU_SOURCE /* strndup */
 #include <stdio.h>
 #include <stdlib.h>
@@ -198,3 +206,5 @@ OSM_Data *osm_xml_parse(OSM_File *F,
     }
     return data;
 }
+
+/* END */

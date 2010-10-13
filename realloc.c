@@ -1,3 +1,11 @@
+/*
+ * realloc.c - re-allocate more space for the arrays in the structs
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #define _GNU_SOURCE /* strndup ... */
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,10 @@
+/*
+ * osm.h - libosm main include file
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
 
 #ifndef _OSM_H
 # define _OSM_H

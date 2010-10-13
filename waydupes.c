@@ -1,3 +1,12 @@
+/*
+ * waydupes.c - find duplicate ways
+ *            - example and test for libosm
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -263,3 +272,5 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+/* END */

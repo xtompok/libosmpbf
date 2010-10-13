@@ -1,3 +1,11 @@
+/*
+ * xml-write.c - .osm XML writing
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <stdio.h>
 
 #include "osm.h"
@@ -115,4 +123,4 @@ void osm_xml_write_relation(OSM_Relation *r, FILE *outfh) {
     }
 }
 
-
+/* END */

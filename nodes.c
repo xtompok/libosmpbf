@@ -1,3 +1,11 @@
+/*
+ * nodes.c - sort OSM_Node_List and find nodes
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #define _GNU_SOURCE /* strndup ... */
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,3 +50,4 @@ void osm_node_list_sort(OSM_Node_List *n) {
     qsort(n->data, n->num, sizeof(OSM_Node *), osm_node_cmp);
 }
 
+/* END */

@@ -1,8 +1,14 @@
+/*
+ * free.c - free allocated structs
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
 #include <stdlib.h>
 #include <string.h>
 
 #include "osm.h"
-
 
 void osm_free_tags(OSM_Tag_List *t) {
     int i;
@@ -23,7 +29,6 @@ void osm_free_node(OSM_Node *n) {
     if (n == NULL)
         return;
     osm_free_tags(n->tags);
-    // free(n->user->val);
     if (*n->user)
         free(n->user);
     free(n);
@@ -33,7 +38,6 @@ void osm_free_way(OSM_Way *w) {
     if (w == NULL)
         return;
     osm_free_tags(w->tags);
-    // free(w->user->val);
     if (*w->user)
         free(w->user);
     free(w->nodes);
@@ -52,12 +56,10 @@ void osm_free_relation(OSM_Relation *r) {
     if (r == NULL)
         return;
     osm_free_tags(r->tags);
-    // free(r->user->val);
     if (*r->user)
         free(r->user);
     if (r->member != NULL) {
         for (i=0; i<r->member->num; i++) {
-            // free(r->member->data[i].role->val);
             if (*r->member->data[i].role)
                 free(r->member->data[i].role);
         }
@@ -67,3 +69,4 @@ void osm_free_relation(OSM_Relation *r) {
     free(r);
 }
 
+/* END */

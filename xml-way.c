@@ -1,3 +1,11 @@
+/*
+ * xml-way.c - .osm XML parsing, way part
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #define _GNU_SOURCE /* strndup ... */
 #include <stdio.h>
 #include <stdlib.h>
@@ -244,3 +252,5 @@ OSM_Way_List *osm_xml_parse_ways(long int start,
                     __FILE__, __LINE__, __FUNCTION__, wl->num);
     return wl;
 }
+
+/* END */

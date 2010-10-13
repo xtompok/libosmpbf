@@ -1,3 +1,11 @@
+/*
+ * bbox.c - bounding box 
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #define _GNU_SOURCE /* strndup ... */
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,4 +39,4 @@ OSM_BBox *osm_bbox_from_nodes(OSM_Node_List *n) {
     return box;
 }
 
-
+/* END */

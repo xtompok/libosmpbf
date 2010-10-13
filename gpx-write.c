@@ -1,3 +1,11 @@
+/*
+ * gpx-write.c - write GPX file from OSM_Data
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -195,3 +203,4 @@ void osm_gpx_write(OSM_Data *data, FILE *outfh, char *creator) {
     osm_gpx_write_footer(outfh);
 }
 
+/* END */

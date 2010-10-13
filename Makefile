@@ -25,13 +25,14 @@ CC_FLAGS=-Wall -g -O2
 LD_FLAGS=-lm -lprotobuf-c -lz
 
 
-%.o: %.c proto_c_gen 
+#%.o: %.c $(SRC_FILES) proto_c_gen
+.c.o: $(SRC_FILES) proto_c_gen
 	#$(CC) $(CC_FLAGS) -o $@ -c $*.c
-	$(CC) -Wl,--export-dynamic -shared -fPIC $(CC_FLAGS) -o $@ -c $*.c
+	$(CC) -Wl,--export-dynamic -shared -fPIC $(CC_FLAGS) -o $@ -c $<
 
 all: libosm.so osmpbf2osm osm-extract osm2gpx waydupes
 
-libosm.so: proto_c_gen $(OBJECT_FILES) 
+libosm.so: proto_c_gen $(OBJECT_FILES) $(SRC_FILES)
 	$(CC) -Wl,--export-dynamic -shared -fPIC $(CC_FLAGS) $(LD_FLAGS) \
 		-o libosm.so $(OBJECT_FILES)
 	#$(CC) $(CC_FLAGS) $(LD_FLAGS) 

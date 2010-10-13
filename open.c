@@ -1,3 +1,11 @@
+/*
+ * open.c - open file... 
+ *        
+ * This file is licenced licenced under the General Public License 3. 
+ *
+ * Hanno Hecker <vetinari+osm at ankh-morp dot org>
+ */
+
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
@@ -84,4 +92,4 @@ OSM_File *osm_open(const char *filename, enum OSM_File_Type type) {
     return osm_file;
 }
 
-
+/* END */
