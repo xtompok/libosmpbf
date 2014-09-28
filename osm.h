@@ -135,8 +135,8 @@ extern OSM_Data *osm_pbf_parse(OSM_File *F,
 extern void osm_pbf_timestamp(const long int deltatimestamp, char *timestamp);
 extern unsigned char *osm_pbf_uncompress_blob(Blob *bmsg);
 extern uint32_t osm_pbf_bh_length(OSM_File *F);
-extern void osm_pbf_free_bh(BlockHeader *bh);
-extern BlockHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len);
+extern void osm_pbf_free_bh(BlobHeader *bh);
+extern BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len);
 extern void osm_pbf_free_blob(Blob *B, unsigned char *uncompressed);
 extern Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed);
 extern void osm_pbf_free_primitive(PrimitiveBlock *P);
