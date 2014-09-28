@@ -70,7 +70,7 @@ unsigned char *osm_pbf_uncompress_blob(Blob *bmsg) {
     else if (bmsg->has_lzma_data) {
         fprintf(stderr, "LZMA data\n");
     }
-    else if (bmsg->has_bzip2_data) {
+    else if (bmsg->has_obsolete_bzip2_data) {
         fprintf(stderr, "bzip2 data\n");
     }
     else {
@@ -96,12 +96,12 @@ uint32_t osm_pbf_bh_length(OSM_File *F) {
     return length;
 }
 
-void osm_pbf_free_bh(BlockHeader *bh) {
-    block_header__free_unpacked(bh, &protobuf_c_system_allocator);
+void osm_pbf_free_bh(BlobHeader *bh) {
+    blob_header__free_unpacked(bh, NULL);
 }
 
-BlockHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
-    BlockHeader *bh = NULL;
+BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
+    BlobHeader *bh = NULL;
     unsigned char *buffer = NULL;
     unsigned char c;
     int i = 0;
@@ -112,12 +112,12 @@ BlockHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
         buffer[i] = c;
     }
 
-    bh = block_header__unpack(NULL, len, buffer);
+    bh = blob_header__unpack(NULL, len, buffer);
     free(buffer);
     if (bh == NULL) {
-        fprintf(stderr, "Error unpacking BlockHeader message\n");
+        fprintf(stderr, "Error unpacking BlobHeader message\n");
         free(buffer);
-        return (BlockHeader *)NULL;
+        return (BlobHeader *)NULL;
     }
 
     return bh;
@@ -126,7 +126,7 @@ BlockHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
 void osm_pbf_free_blob(Blob *B, unsigned char *uncompressed) {
     if (!B->has_raw)
         free(uncompressed);
-    blob__free_unpacked(B, &protobuf_c_system_allocator);
+    blob__free_unpacked(B, NULL);
 }
 
 Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
@@ -163,7 +163,7 @@ Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
 }
 
 void osm_pbf_free_primitive(PrimitiveBlock *P) {
-    primitive_block__free_unpacked(P, &protobuf_c_system_allocator);
+    primitive_block__free_unpacked(P, NULL);
 }
 
 PrimitiveBlock *osm_pbf_unpack_data(Blob *B, unsigned char *uncompressed) {

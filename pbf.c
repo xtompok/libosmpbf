@@ -34,7 +34,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
         )
 {
     uint32_t length;
-    BlockHeader *bh = NULL;
+    BlobHeader *bh = NULL;
     Blob      *blob = NULL;
     struct osm_members *mem_nodes = NULL;
     struct osm_members *mem_ways  = NULL;
