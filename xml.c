@@ -47,6 +47,30 @@ char *osm_xml_decode(char *src) {
                 *dest = '>'; ++dest;
                 src += 3;
             }
+            else if (strncmp(src, "&#10;", 5) == 0) {
+                *dest = '\n'; ++dest;
+                src += 4;
+            }
+            else if (strncmp(src, "&#34;", 5) == 0) {
+                *dest = '"'; ++dest;
+                src += 4;
+            }
+            else if (strncmp(src, "&#38;", 5) == 0) {
+                *dest = '&'; ++dest;
+                src += 4;
+            }
+            else if (strncmp(src, "&#39;", 5) == 0) {
+                *dest = '\''; ++dest;
+                src += 4;
+            }
+            else if (strncmp(src, "&#60;", 5) == 0) {
+                *dest = '<'; ++dest;
+                src += 4;
+            }
+            else if (strncmp(src, "&#62;", 5) == 0) {
+                *dest = '>'; ++dest;
+                src += 4;
+            }
             else {
                 fprintf(stderr, "warning: missing decode for %s\n", src);
             }

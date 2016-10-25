@@ -33,7 +33,7 @@ void osm_pbf_timestamp(const long int deltatimestamp, char *timestamp) {
     strftime(timestamp, 21, "%Y-%m-%dT%H:%M:%SZ" , ts);
 }
 
-unsigned char *osm_pbf_uncompress_blob(Blob *bmsg) {
+unsigned char *osm_pbf_uncompress_blob(OSMPBF__Blob *bmsg) {
     if (bmsg->has_zlib_data) {
         int ret;
         unsigned char *uncompressed;
@@ -96,12 +96,12 @@ uint32_t osm_pbf_bh_length(OSM_File *F) {
     return length;
 }
 
-void osm_pbf_free_bh(BlobHeader *bh) {
-    blob_header__free_unpacked(bh, NULL);
+void osm_pbf_free_bh(OSMPBF__BlobHeader *bh) {
+    osmpbf__blob_header__free_unpacked(bh, NULL);
 }
 
-BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
-    BlobHeader *bh = NULL;
+OSMPBF__BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
+    OSMPBF__BlobHeader *bh = NULL;
     unsigned char *buffer = NULL;
     unsigned char c;
     int i = 0;
@@ -112,26 +112,26 @@ BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len) {
         buffer[i] = c;
     }
 
-    bh = blob_header__unpack(NULL, len, buffer);
+    bh = osmpbf__blob_header__unpack(NULL, len, buffer);
     free(buffer);
     if (bh == NULL) {
-        fprintf(stderr, "Error unpacking BlobHeader message\n");
+        fprintf(stderr, "Error unpacking OSMPBF__BlobHeader message\n");
         free(buffer);
-        return (BlobHeader *)NULL;
+        return (OSMPBF__BlobHeader *)NULL;
     }
 
     return bh;
 }
 
-void osm_pbf_free_blob(Blob *B, unsigned char *uncompressed) {
+void osm_pbf_free_blob(OSMPBF__Blob *B, unsigned char *uncompressed) {
     if (!B->has_raw)
         free(uncompressed);
-    blob__free_unpacked(B, NULL);
+    osmpbf__blob__free_unpacked(B, NULL);
 }
 
-Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
+OSMPBF__Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
 {
-    Blob *B = NULL;
+    OSMPBF__Blob *B = NULL;
     unsigned char *buffer;
     unsigned char c;
     int i = 0;
@@ -141,11 +141,11 @@ Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
         buffer[i] = c;
     }
 
-    B = blob__unpack(NULL, len, buffer);
+    B = osmpbf__blob__unpack(NULL, len, buffer);
     if (B == NULL) {
-        fprintf(stderr, "Error unpacking Blob message\n");
+        fprintf(stderr, "Error unpacking OSMPBF__Blob message\n");
         free(buffer);
-        return (Blob *)NULL;
+        return (OSMPBF__Blob *)NULL;
     }
 
     free(buffer);
@@ -154,24 +154,24 @@ Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed)
     else {
         unsigned char *tmp = osm_pbf_uncompress_blob(B);
         if (tmp == NULL) {
-            fprintf(stderr, "failed to uncompress Blob\n");
-            return (Blob *)NULL;
+            fprintf(stderr, "failed to uncompress OSMPBF__Blob\n");
+            return (OSMPBF__Blob *)NULL;
         }
         *uncompressed = tmp;
     }
     return B;
 }
 
-void osm_pbf_free_primitive(PrimitiveBlock *P) {
-    primitive_block__free_unpacked(P, NULL);
+void osm_pbf_free_primitive(OSMPBF__PrimitiveBlock *P) {
+    osmpbf__primitive_block__free_unpacked(P, NULL);
 }
 
-PrimitiveBlock *osm_pbf_unpack_data(Blob *B, unsigned char *uncompressed) {
-    PrimitiveBlock *P = 
-            primitive_block__unpack(NULL, B->raw_size, uncompressed);
+OSMPBF__PrimitiveBlock *osm_pbf_unpack_data(OSMPBF__Blob *B, unsigned char *uncompressed) {
+    OSMPBF__PrimitiveBlock *P = 
+            osmpbf__primitive_block__unpack(NULL, B->raw_size, uncompressed);
     if (P == NULL) {
-        fprintf(stderr, "Error unpacking PrimitiveBlock message\n");
-        return (PrimitiveBlock *)NULL;
+        fprintf(stderr, "Error unpacking OSMPBF__PrimitiveBlock message\n");
+        return (OSMPBF__PrimitiveBlock *)NULL;
     }
     return P;
 }

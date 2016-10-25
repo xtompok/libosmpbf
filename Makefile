@@ -1,4 +1,4 @@
-OSM_BINARY_PATH=../../OSM-binary
+OSM_BINARY_PATH=../OSM-binary
 
 SRC_FILES=open.c free.c realloc.c util.c parse.c \
 	pbf-util.c pbf.c \
@@ -33,8 +33,8 @@ LD_FLAGS=-lm -lprotobuf-c -lz
 all: libosm.so osmpbf2osm osm-extract osm2gpx waydupes
 
 libosm.so: proto_c_gen $(OBJECT_FILES) $(SRC_FILES)
-	$(CC) -Wl,--export-dynamic -shared -fPIC $(CC_FLAGS) $(LD_FLAGS) \
-		-o libosm.so $(OBJECT_FILES)
+	$(CC) -Wl,--export-dynamic -shared -fPIC $(CC_FLAGS) \
+		-o libosm.so $(OBJECT_FILES) $(LD_FLAGS) 
 	#$(CC) $(CC_FLAGS) $(LD_FLAGS) 
 
 osmpbf2osm: libosm.so

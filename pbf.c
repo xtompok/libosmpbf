@@ -34,8 +34,8 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
         )
 {
     uint32_t length;
-    BlobHeader *bh = NULL;
-    Blob      *blob = NULL;
+    OSMPBF__BlobHeader *bh = NULL;
+    OSMPBF__Blob      *blob = NULL;
     struct osm_members *mem_nodes = NULL;
     struct osm_members *mem_ways  = NULL;
     struct osm_members *bbn = NULL;
@@ -175,7 +175,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
         bh = osm_pbf_get_bh(F, length);
         length = bh->datasize;
         if (length <= 0 || length > MAX_BLOB_SIZE) {
-            fprintf(stderr, "Blob isn't present or exceeds "
+            fprintf(stderr, "OSMPBF__Blob isn't present or exceeds "
                             "minimum/maximum size\n");
             return (OSM_Data *)NULL;
         }
@@ -195,7 +195,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
 
         }
         else if (state == osm_pbf_data) {
-            PrimitiveBlock *P = osm_pbf_unpack_data(blob, uncompressed);
+            OSMPBF__PrimitiveBlock *P = osm_pbf_unpack_data(blob, uncompressed);
             double lat_offset  = NANO_DEGREE * P->lat_offset;
             double lon_offset  = NANO_DEGREE * P->lon_offset;
             double granularity = NANO_DEGREE * P->granularity;
@@ -218,7 +218,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                 {
                     if (P->primitivegroup[j]->n_nodes > 0) {
                         for (k = 0; k < P->primitivegroup[j]->n_nodes; k++) {
-                            Node *node = P->primitivegroup[j]->nodes[k];
+                            OSMPBF__Node *node = P->primitivegroup[j]->nodes[k];
 
                             OSM_Node *n = malloc(sizeof(OSM_Node));
                             n->id = node->id;
@@ -245,7 +245,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                                 }
                             }
                             if (node->info) {
-                                Info *I = node->info;
+                                OSMPBF__Info *I = node->info;
                                 if (I->has_version) 
                                     n->version = I->version;
                                 else n->version = 0;
@@ -346,7 +346,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                         long int deltauid = 0;
                         long int deltauser_sid = 0;
                         int k;
-                        DenseNodes *D = P->primitivegroup[j]->dense;
+                        OSMPBF__DenseNodes *D = P->primitivegroup[j]->dense;
 
                         for (k=0; k<D->n_id; k++) {
                             deltaid  += D->id[k];
@@ -364,7 +364,7 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                             n->uid       = 0;
                             n->changeset = 0;
                             if (D->denseinfo) {
-                                DenseInfo *I = D->denseinfo;
+                                OSMPBF__DenseInfo *I = D->denseinfo;
                                 deltatimestamp += I->timestamp[k];
                                 deltachangeset += I->changeset[k];
                                 deltauid       += I->uid[k];
@@ -478,14 +478,14 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                     if (P->primitivegroup[j]->n_ways > 0) {
                         int k = 0;
                         for (k = 0; k < P->primitivegroup[j]->n_ways; k++) {
-                            Way *W = P->primitivegroup[j]->ways[k];
+                            OSMPBF__Way *W = P->primitivegroup[j]->ways[k];
 
                             OSM_Way *way = malloc(sizeof(OSM_Way));
                             uint64_t *ref = NULL;
                             int l;
                             way->id = W->id;
                             if (W->info) {
-                                Info *I = W->info;
+                                OSMPBF__Info *I = W->info;
                                 if (I->has_version)
                                     way->version = I->version;
                                 else way->version = 0;
@@ -609,12 +609,12 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                     if (P->primitivegroup[j]->n_relations > 0) {
                         int k;
                         for (k=0; k<P->primitivegroup[j]->n_relations; k++) {
-                            Relation *R = P->primitivegroup[j]->relations[k];
+                            OSMPBF__Relation *R = P->primitivegroup[j]->relations[k];
                             OSM_Relation *rel = malloc(sizeof(OSM_Relation));
                             
                             rel->id = R->id;
                             if (R->info) {
-                                Info *I = R->info;
+                                OSMPBF__Info *I = R->info;
         
                                 if (I->has_version)
                                     rel->version = I->version;
@@ -663,17 +663,17 @@ OSM_Data *osm_pbf_parse(OSM_File *F,
                                     rel->member->data[l].ref = deltamemids;
                                     // ref[l] = deltamemids;
                                     switch (R->types[l]) {
-                                        case RELATION__MEMBER_TYPE__NODE:
+                                        case OSMPBF__RELATION__MEMBER_TYPE__NODE:
                                             rel->member->data[l].type = OSM_REL_MEMBER_TYPE_NODE;
                                             nref[num_nref] = deltamemids;
                                             ++num_nref; 
                                             break;
-                                        case RELATION__MEMBER_TYPE__WAY:
+                                        case OSMPBF__RELATION__MEMBER_TYPE__WAY:
                                             rel->member->data[l].type = OSM_REL_MEMBER_TYPE_WAY;
                                             wref[num_wref] = deltamemids;
                                             ++num_wref; 
                                             break;
-                                        case RELATION__MEMBER_TYPE__RELATION:
+                                        case OSMPBF__RELATION__MEMBER_TYPE__RELATION:
                                             rel->member->data[l].type = OSM_REL_MEMBER_TYPE_RELATION;
                                             // ref[l] = deltamemids; FIXME - relations in relations
                                             break;

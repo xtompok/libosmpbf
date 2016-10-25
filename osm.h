@@ -133,14 +133,14 @@ extern OSM_Data *osm_pbf_parse(OSM_File *F,
 
 /* pbf-util.c */
 extern void osm_pbf_timestamp(const long int deltatimestamp, char *timestamp);
-extern unsigned char *osm_pbf_uncompress_blob(Blob *bmsg);
+extern unsigned char *osm_pbf_uncompress_blob(OSMPBF__Blob *bmsg);
 extern uint32_t osm_pbf_bh_length(OSM_File *F);
-extern void osm_pbf_free_bh(BlobHeader *bh);
-extern BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len);
-extern void osm_pbf_free_blob(Blob *B, unsigned char *uncompressed);
-extern Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed);
-extern void osm_pbf_free_primitive(PrimitiveBlock *P);
-extern PrimitiveBlock *osm_pbf_unpack_data(Blob *B, unsigned char *uncompressed);
+extern void osm_pbf_free_bh(OSMPBF__BlobHeader *bh);
+extern OSMPBF__BlobHeader *osm_pbf_get_bh(OSM_File *F, uint32_t len);
+extern void osm_pbf_free_blob(OSMPBF__Blob *B, unsigned char *uncompressed);
+extern OSMPBF__Blob *osm_pbf_get_blob(OSM_File *F, uint32_t len, unsigned char **uncompressed);
+extern void osm_pbf_free_primitive(OSMPBF__PrimitiveBlock *P);
+extern OSMPBF__PrimitiveBlock *osm_pbf_unpack_data(OSMPBF__Blob *B, unsigned char *uncompressed);
 
 /* nodes.c */
 extern int osm_node_pos(OSM_Node_List *n, uint64_t id);
